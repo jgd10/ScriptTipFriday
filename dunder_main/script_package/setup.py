@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="script-package",
-    version="0.1.dev0",
+    version="0.1.0",
     url="",
     author="James Derrick",
     author_email="jgd10.github@gmail.com",
