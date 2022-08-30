@@ -242,6 +242,43 @@ parser.add_argument('--version', action='version', version='script6 v1.0')
 script6 v1.0
 ```
 
+* When developing programs with `argparse` it is best practice to group your code into functions, often in a separate file. In `script7.py` I've grouped things as they commonly are.
+
+```Python
+from argparse import ArgumentParser
+
+
+def create_parser():
+    parser = ArgumentParser(description='Demo program')
+    parser.add_argument('--flag',
+                        action='store_true',
+                        help='when provided sets to True, otherwise False')
+    parser.add_argument('--reverse-flag',
+                        action='store_false',
+                        help='when provided sets to False, otherwise True')
+
+    parser.add_argument('--version', action='version', version='script6 v1.0')
+    return parser
+
+
+def cli():
+    p = create_parser()
+    args = p.parse_args()
+    return args.flag, args.reverse_flag
+
+
+def main():
+    flag, reverse_flag = cli()
+    print(flag)
+    print(reverse_flag)
+
+
+if __name__ == '__main__':
+    main()
+```
+
+This sort of structure is ideal for developing `argparse` CLIs.
+
 ## Closing Comments
 
 This article should serve as a pretty good primer for getting started with `argparse`. I have also included all the scripts used here in my GitHub script tip repo, if you're interested in playing around with them. That can be found [here](https://github.com/jgd10/ScriptTipFriday). Finally, I hope you enjoy making your own CLIs! The skill is ever a "tool for the box".
