@@ -4,7 +4,7 @@ A huge part of any Python developer's arsenal is the ability to link your Python
 
 * APIs - "Application Programming Interface"s (let programs talk to each other)
 * GUIs - "Graphical User Interface"s (let humans talk to the program)
-* CLIs - "Command Line Interface"s (let developers talk to the program)
+* CLIs - "Command Line Interface"s (let humans talk to the program but its easy to develop)
 
 Of the three, CLIs are by far the easiest to build conceptually and programmatically. Crafting good GUIs and APIs is very hard and is a fine art that requires many years of training. As you'll find going through life, [most people aren't very good at it](https://youtu.be/S-3wEC6Fj_8?t=3404).
 
