@@ -1,6 +1,6 @@
 # Script Tip: `argparse` (How to make your own CLI)
 
-A huge part of any Python developer's arsenal is the ability to link your Python program with "other stuff". "other stuff" meaning everything from other programs to other humans to other developers. As such, as your careers develop you learn how to write more something-Is. The most common ones will be:
+A huge part of any Python developer's arsenal is the ability to link your Python program with "other stuff". "other stuff" meaning everything from other programs to other humans to other developers. As your careers develop you learn how to write more something-Is. The most common ones will be:
 
 * APIs - "Application Programming Interface"s (let programs talk to each other)
 * GUIs - "Graphical User Interface"s (let humans talk to the program)
@@ -8,7 +8,7 @@ A huge part of any Python developer's arsenal is the ability to link your Python
 
 Of the three, CLIs are by far the easiest to build conceptually and programmatically. Crafting good GUIs and APIs is very hard and is a fine art that requires many years of training. As you'll find going through life, [most people aren't very good at it](https://youtu.be/S-3wEC6Fj_8?t=3404).
 
-CLIs on the other hand are *fine* it's hard to deliberately mess one up, so long as it's not too complicated. And that's where this script tip comes in! In this article I'll explain how the builtin Python CLI-builder `argparse` works. The perfect tool for building a quick and easy interface with your Python script.
+CLIs on the other hand are *fine*; it's hard to deliberately mess one up, so long as it's not too complicated. And that's where this script tip comes in! In this article I'll explain how the builtin Python CLI-builder `argparse` works. The perfect tool for building a quick and easy interface with your Python script.
 
 ## Introducing `argparse`
 
@@ -26,7 +26,7 @@ This article, however, will focus on `argparse` and is aimed at people coming ac
 
 ## What does a CLI "look like"?
 
-A CLI has the following components: "the command" (`python` in Python, or some other alias like `py2` or `py3` are common), "the option(s)" (flags that indicate what you want to do. The most common being the `--help` flag.), and "the argument(s)" (information you want to insert into the script, like the path to a file, for example). In vanilla Python there is one "command", the call to `python` and one argument every time, the script name/path.
+A CLI has the following components: "the command" (`python` in Python, or some other alias like `py2` or `py3` are common), "the option(s)" (flags that indicate what you want to do. The most common being the `--help` flag.), and "the argument(s)" (information you want to insert into the script, like the path to a file, for example). In vanilla Python there is one "command", the call to `python` and at least one argument every time, the script name/path.
 
 ```shell
 python my_script.py
@@ -36,7 +36,7 @@ The command here is `python` and the argument is `my_script.py`.
 
 ### `sys.argv`
 
-In Python, the builtin `sys` package has the property `argv`, which is a list of strings. This contains a list of all the arguments supplied to python when it was exectuted.
+OK but that's all on the command line. How does Python access this information inside a script? Well, in Python, the builtin `sys` package has the property `argv`, which is a list of all the input arguments as strings. The delimiter separating the arguments is the space ` ` character, although substrings within the CLI command are preserved (strings contained within a pair of double quotes `"..."`).
 
 If you have a script (`script.py`) containing
 
@@ -55,31 +55,31 @@ and run it, you get the following output.
 
 > Note: the double backslash is because I'm on Windows, which uses backslashes in paths, and backslash is also the escape character in Python strings, so it has to be escaped to be used in a path. As such, path visualisations in Python on Windows will be positively FULL of `\\`. Try to use [pathlib](https://realpython.com/python-pathlib/) where you can to get around this somewhat!
 
-If we add more args to our command line we can see just how `argv` works.
+If we add more arguments to our command line we can see just how `argv` works.
 
 ```
 >>> python script.py new set-of "test args"
 ['script.py', 'new', 'set-of', 'test args']
 ```
 
-> Why is the backslash gone? Honestly, I'm not sure and I couldn't find any info after a cursory google. If you have any idea why, please leave a comment! Although the reason is not important for this article because for the CLI we actually do not care what it is, we only care about what comes after it.
+> Why is the backslash gone? Honestly, I'm not sure and I couldn't find any info after a cursory google. If you have any idea why, please leave a comment! Although the reason is not important for this article because for the CLI the only argument we don't care about is the first one because it is always the same!
 
-The space character delimits arguments ` `, unless included in double quotes, which allows one to specify options with spaces in them.
+So, `argparse` is essentially a package that parses `sys.argv` and makes sense of it, turning it into options and arguments for the CLI.
 
-This may seem like a big aside but it's all part of the groundwork because `argparse` is essentially a package that parses `sys.argv` and makes sense of it, turning it into options and commands.
+> Note: All input on the command line are *command line arguments* but in the CLI, only some of those are *CLI arguments*. Some are what I'm calling *options* or *flags*.
 
 ### Nitty-gritty of CLI
 
-Generally CLIs make use of option-argument pairs. And this makes sense. For example
+Generally CLIs make use of option-argument pairs. You provide some sort of option or flag and then the input corresponding to it, like `--density 3.4` or `--path .\\Program\\Python\\`, and this makes sense. For example
 
 ```
 >>> python script2.py --factorial 9
 362880
 ```
 
-the option is `--factorial` and its corresponding argument is `9`. Providing additional args throws an error, unless we modify the programn to handle it, but that might not be good design, because you (as the user) wouldn't necessarily expect that to happen.
+the option is `--factorial` and its corresponding argument is `9`. Providing additional args throws an error, unless we were to modify the programn to handle it.
 
-You can have multiple pairs as well:
+Scripts are not just limited to single pair either. We can write one to have multiple pairs as well:
 
 ```
 >>> python .\script3.py --base 2 --exponent 3  
@@ -93,9 +93,6 @@ In fact, you can have multiple pairs that are *optional*.
 >>> python .\script4.py --num1 3. --num2 4.
 1.0
 1.3333333333333333
-```
-
-```
 >>> python .\script4.py --num1 5.          
 1.6666666666666667
 ```
@@ -113,9 +110,6 @@ In fact, you can have multiple pairs that are *optional*.
 >   --num1 NUM1  Option 1
 >   --num2 NUM2  Option 2
 >
->```
-> and
->```
 > >>> python .\script4.py --help  
 > usage: script4.py [-h] [--num1 NUM1] [--num2 NUM2]
 > 
@@ -130,7 +124,7 @@ In fact, you can have multiple pairs that are *optional*.
 
 ## Constructing a CLI with `argparse`
 
-OK so we're ready to tackle the main topic of this tip now; apologies if you already knew all of the above. I like to cover all my bases in an article because your work may well be someone's first exposure to any number of concepts, so it always pays to be thorough.
+OK so we're ready to tackle the main topic of this tip now; apologies if you already knew all of the above. I like to cover all my bases in an article because one's work may well be someone's first exposure to any number of concepts, so it always pays to be thorough.
 
 Anyway! How do we use argparse? It's pretty simple, but requires a bit of mental gymnastics if you aren't used to thinking about programming this way.
 
