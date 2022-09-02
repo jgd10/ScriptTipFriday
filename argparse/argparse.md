@@ -130,7 +130,7 @@ Anyway! How do we use argparse? It's pretty simple, but requires a bit of mental
 
 Your program executes in the following way:
 
-1. You [smash that Enter button](https://www.youtube.com/watch?v=i6k4VfElN3A) on the command line
+1. You smash that Enter button on the command line
 2. The arguments you added are all stored in `sys.argv`
 3. The program enters your script and starts executing things
 
