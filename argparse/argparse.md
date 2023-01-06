@@ -6,9 +6,11 @@ A huge part of any Python developer's arsenal is the ability to link your Python
 * GUIs - "Graphical User Interface"s (let humans talk to the program)
 * CLIs - "Command Line Interface"s (let humans talk to the program but its easy to develop)
 
-Of the three, CLIs are by far the easiest to build conceptually and programmatically. Crafting good GUIs and APIs is very hard and is a fine art that requires many years of training. As you'll find going through life, [most people aren't very good at it](https://youtu.be/S-3wEC6Fj_8?t=3404).
+Of the three, CLIs are by far the easiest to build conceptually and programmatically. Crafting good GUIs and APIs is very hard and is a fine art that requires many years of training. As you'll find going through life, [many people aren't very good at it](https://youtu.be/S-3wEC6Fj_8?t=3404) (and even if you are, you can still mess up; the difficulty of making excellent GUIs can not be overstated).
 
-CLIs on the other hand are *fine*; it's hard to deliberately mess one up, so long as it's not too complicated. And that's where this script tip comes in! In this article I'll explain how the builtin Python CLI-builder `argparse` works. The perfect tool for building a quick and easy interface with your Python script.
+CLIs on the other hand are basically *fine*; it's hard to deliberately mess one up, so long as it's not too complicated. Plus common usecases for developers are pretty simple. In my experience, we often want scripts to use a specific file, or users to specify one behaviourial type of three (say). As a developer this is an invaluable tool and that's where this script tip comes in! In this article I'll explain how the builtin Python CLI-builder `argparse` works. The perfect* tool for building a quick and easy interface with your Python script.
+
+> \*there are arguably better 3rd party tools to build CLIs (and I mention some later), but `argparse` is built into Python, so knowing how it works is valuable.
 
 ## Introducing `argparse`
 
@@ -62,7 +64,7 @@ If we add more arguments to our command line we can see just how `argv` works.
 ['script.py', 'new', 'set-of', 'test args']
 ```
 
-> Why is the backslash gone? Honestly, I'm not sure and I couldn't find any info after a cursory google. If you have any idea why, please leave a comment! Although the reason is not important for this article because for the CLI the only argument we don't care about is the first one because it is always the same!
+> Why is the backslash gone? Honestly, I'm not sure and I couldn't find any info after a cursory google. If you have any idea why, please leave a comment! Although the reason is not important for this article because it's the only one we don't care about, as for the CLI the first one is always the filename, which we can get more consistently via [standard dunder variables](https://docs.python.org/3/reference/import.html#file__). 
 
 So, `argparse` is essentially a package that parses `sys.argv` and makes sense of it, turning it into options and arguments for the CLI.
 
@@ -77,9 +79,9 @@ Generally CLIs make use of option-argument pairs. You provide some sort of optio
 362880
 ```
 
-the option is `--factorial` and its corresponding argument is `9`. Providing additional args throws an error, unless we were to modify the programn to handle it.
+the option is `--factorial` and its corresponding argument is `9`. Providing additional args throws an error, unless we were to modify the program to handle it.
 
-Scripts are not just limited to single pair either. We can write one to have multiple pairs as well:
+Scripts are not just limited to single pairs either. We can write one to have multiple pairs as well:
 
 ```
 >>> python .\script3.py --base 2 --exponent 3  
